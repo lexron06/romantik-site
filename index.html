@@ -166,20 +166,22 @@ const container = document.getElementById("container");
 const buttons = document.getElementById("buttons");
 const music = document.getElementById("music");
 
-function showWord(){
-  if(index < words.length){
-    container.innerHTML = `<div class="word">${words[index]}</div>`;
-    index++;
-    setTimeout(showWord,1400);
+let current = 0;
+
+const interval = setInterval(() => {
+  container.innerHTML = `<div class="word">${words[current]}</div>`;
+  current++;
+
+  if (current === words.length) {
+    clearInterval(interval);
+
+    // son kelime biraz dursun
+    setTimeout(() => {
+      buttons.style.display = "flex";
+    }, 1200);
   }
-}
+}, 1400);
 
-showWord();
-
-// 🔥 BUTONLARI ZORLA GÖSTER
-setTimeout(()=>{
-  buttons.style.display = "flex";
-}, words.length * 1400 + 200);
 
 function startMusic(){
   if(music.paused){
