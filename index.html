@@ -188,23 +188,35 @@ function noClick(){
 // Evet
 function yesClick(){
   document.body.classList.add("shake");
+
+  // kalpler
   for(let j=0;j<25;j++){
     const h=document.createElement("div");
     h.className="heart";
     h.innerText="❤️";
-    h.style.left=Math.random()*innerWidth+"px";
-    h.style.top=innerHeight+"px";
+    h.style.left=Math.random()*window.innerWidth+"px";
+    h.style.top=window.innerHeight+"px";
     document.body.appendChild(h);
     setTimeout(()=>h.remove(),2000);
   }
 
-  document.querySelector(".main").innerHTML="";
-  document.getElementById("finalLove").style.display="block";
+  // sadece gerekli alanları gizle
+  document.getElementById("wordBox").style.display="none";
+  document.getElementById("fullSentence").style.display="none";
+  document.getElementById("buttons").style.display="none";
 
+  // büyük yazı
+  const love=document.getElementById("finalLove");
+  love.style.display="block";
+
+  // 🔥 WHATSAPP YÖNLENDİRME (KESİN)
   setTimeout(()=>{
-    location.href="https://wa.me/905075775145?text=Seni%20Seviyorum";
+    window.location.href =
+      "https://wa.me/905075775145?text=" +
+      encodeURIComponent("Seni Seviyorum");
   },3000);
 }
+
 </script>
 
 </body>
