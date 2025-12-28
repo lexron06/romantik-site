@@ -1,0 +1,226 @@
+<!DOCTYPE html>
+<html lang="tr">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+
+<title>💖</title>
+
+<link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@600&family=Poppins:wght@400;600&display=swap" rel="stylesheet">
+
+<style>
+*{box-sizing:border-box;-webkit-tap-highlight-color:transparent}
+html,body{
+  margin:0;padding:0;
+  width:100%;height:100%;
+  overflow:hidden;
+  font-family:'Poppins',sans-serif;
+  background:radial-gradient(circle at top,#1b1b1b,#000);
+  color:#fff;
+}
+
+.container{
+  height:100%;
+  display:flex;
+  flex-direction:column;
+  justify-content:center;
+  align-items:center;
+  text-align:center;
+  padding:20px;
+}
+
+.word{
+  font-family:'Playfair Display',serif;
+  font-size:clamp(26px,6vw,42px);
+  opacity:0;
+  transform:scale(0.3);
+  animation:zoomIn 1.1s forwards;
+}
+
+@keyframes zoomIn{
+  to{opacity:1;transform:scale(1)}
+}
+
+.buttons{
+  display:none;
+  margin-top:30px;
+  gap:14px;
+  flex-wrap:wrap;
+  justify-content:center;
+}
+
+button{
+  min-width:150px;
+  min-height:55px;
+  font-size:18px;
+  border:none;
+  border-radius:16px;
+  cursor:pointer;
+}
+
+#yesBtn{
+  background:#ff4d6d;
+  color:#fff;
+}
+
+#noBtn{
+  background:#444;
+  color:#fff;
+  position:fixed;
+}
+
+#finalLove{
+  display:none;
+  font-family:'Playfair Display',serif;
+  font-size:clamp(40px,10vw,90px);
+  animation:pulse 1.2s infinite;
+}
+
+@keyframes pulse{
+  0%,100%{transform:scale(1)}
+  50%{transform:scale(1.08)}
+}
+
+/* hearts */
+.heart{
+  position:fixed;
+  color:#ff4d6d;
+  font-size:24px;
+  animation:float 2s linear forwards;
+}
+@keyframes float{
+  to{transform:translateY(-120px);opacity:0}
+}
+
+/* shake */
+.shake{
+  animation:shake 0.4s;
+}
+@keyframes shake{
+  0%{transform:translate(0)}
+  25%{transform:translate(6px)}
+  50%{transform:translate(-6px)}
+  75%{transform:translate(6px)}
+}
+
+/* shapes */
+.shapes{
+  position:fixed;
+  bottom:30px;
+  display:flex;
+  gap:40px;
+}
+.circle{
+  width:36px;height:36px;
+  border-radius:50%;
+  background:#ff4d6d;
+}
+.triangle{
+  width:0;height:0;
+  border-left:22px solid transparent;
+  border-right:22px solid transparent;
+  border-bottom:40px solid #ff4d6d;
+}
+
+@media(max-width:480px){
+  .circle{width:28px;height:28px}
+  .triangle{
+    border-left:18px solid transparent;
+    border-right:18px solid transparent;
+    border-bottom:32px solid #ff4d6d;
+  }
+  .shapes{gap:25px}
+}
+</style>
+</head>
+
+<body>
+
+<div class="container" id="container"></div>
+
+<div class="buttons" id="buttons">
+  <button id="yesBtn" onclick="yesClick()">Evet</button>
+  <button id="noBtn" onclick="noClick()">Hayır</button>
+</div>
+
+<div id="finalLove">Seni Seviyorum ❤️</div>
+
+<div class="shapes">
+  <div class="triangle"></div>
+  <div class="circle"></div>
+</div>
+
+<audio id="music" src="https://files.catbox.moe/5o8y0j.mp3"></audio>
+
+<script>
+const words = [
+"Sen","Ben","İkimiz",
+"30.12.2025",
+"Saat 17.30",
+"Coffee LAB",
+"Polatlı"
+];
+
+let index = 0;
+const container = document.getElementById("container");
+const buttons = document.getElementById("buttons");
+const music = document.getElementById("music");
+
+function showWord(){
+  if(index < words.length){
+    container.innerHTML = `<div class="word">${words[index]}</div>`;
+    index++;
+    setTimeout(showWord,1400);
+  }
+}
+
+showWord();
+
+// 🔥 BUTONLARI ZORLA GÖSTER
+setTimeout(()=>{
+  buttons.style.display = "flex";
+}, words.length * 1400 + 200);
+
+function startMusic(){
+  if(music.paused){
+    music.volume=0.6;
+    music.play();
+  }
+}
+
+document.body.addEventListener("click",startMusic,{once:true});
+
+function noClick(){
+  const btn=document.getElementById("noBtn");
+  const pad=20;
+  const x=Math.random()*(window.innerWidth-btn.offsetWidth-pad);
+  const y=Math.random()*(window.innerHeight-btn.offsetHeight-pad);
+  btn.style.left=x+"px";
+  btn.style.top=y+"px";
+  btn.style.transition="0.12s";
+}
+
+function yesClick(){
+  document.body.classList.add("shake");
+  for(let i=0;i<25;i++){
+    const h=document.createElement("div");
+    h.className="heart";
+    h.innerText="❤️";
+    h.style.left=Math.random()*window.innerWidth+"px";
+    h.style.top=window.innerHeight+"px";
+    document.body.appendChild(h);
+    setTimeout(()=>h.remove(),2000);
+  }
+
+  buttons.style.display="none";
+  container.style.display="none";
+  document.getElementById("finalLove").style.display="block";
+
+  setTimeout(()=>{
+    window.location.href="https://wa.me/905075775145?text=Seni%20Seviyorum";
+  },3000);
+}
+</script>
+
+</body>
+</html>
