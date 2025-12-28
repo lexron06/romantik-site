@@ -2,14 +2,14 @@
 <html lang="tr">
 <head>
 <meta charset="UTF-8">
-<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
 
 <title>💖</title>
 
 <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@600&family=Poppins:wght@400;600&display=swap" rel="stylesheet">
 
 <style>
-*{box-sizing:border-box;-webkit-tap-highlight-color:transparent}
+*{box-sizing:border-box}
 html,body{
   margin:0;padding:0;
   width:100%;height:100%;
@@ -19,9 +19,10 @@ html,body{
   font-family:'Poppins',sans-serif;
 }
 
-.container{
+.main{
   height:100%;
   display:flex;
+  flex-direction:column;
   justify-content:center;
   align-items:center;
   text-align:center;
@@ -33,34 +34,54 @@ html,body{
   font-size:clamp(26px,6vw,42px);
   opacity:0;
   transform:scale(0.3);
-  animation:zoom 1.1s forwards;
+  animation:zoom 1s forwards;
 }
 
 @keyframes zoom{
   to{opacity:1;transform:scale(1)}
 }
 
+#fullSentence{
+  display:none;
+  font-family:'Playfair Display',serif;
+  font-size:clamp(18px,4.5vw,24px);
+  margin-top:20px;
+  padding:0 10px;
+}
+
 .buttons{
   display:none;
-  position:fixed;
-  bottom:120px;
+  margin-top:25px;
+  position:relative;
   width:100%;
-  justify-content:center;
-  gap:14px;
-  flex-wrap:wrap;
+  height:120px;
+  max-width:360px;
 }
 
 button{
-  min-width:150px;
-  min-height:55px;
+  min-width:140px;
+  min-height:52px;
   font-size:18px;
   border:none;
-  border-radius:16px;
+  border-radius:14px;
   cursor:pointer;
+  position:absolute;
 }
 
-#yesBtn{background:#ff4d6d;color:#fff}
-#noBtn{background:#444;color:#fff;position:fixed}
+#yesBtn{
+  background:#ff4d6d;
+  color:#fff;
+  left:50%;
+  transform:translateX(-50%);
+  bottom:0;
+}
+
+#noBtn{
+  background:#444;
+  color:#fff;
+  left:10%;
+  bottom:0;
+}
 
 #finalLove{
   display:none;
@@ -70,14 +91,12 @@ button{
 }
 
 @keyframes pulse{
-  0%,100%{transform:scale(1)}
   50%{transform:scale(1.08)}
 }
 
 .heart{
   position:fixed;
   font-size:24px;
-  color:#ff4d6d;
   animation:float 2s linear forwards;
 }
 @keyframes float{
@@ -86,51 +105,42 @@ button{
 
 .shake{animation:shake 0.4s}
 @keyframes shake{
-  0%{transform:translate(0)}
   25%{transform:translate(6px)}
   50%{transform:translate(-6px)}
-  75%{transform:translate(6px)}
 }
 
 .shapes{
   position:fixed;
-  bottom:30px;
+  bottom:25px;
   display:flex;
-  gap:40px;
+  gap:35px;
 }
-.circle{
-  width:36px;height:36px;
-  border-radius:50%;
-  background:#ff4d6d;
-}
+.circle{width:30px;height:30px;border-radius:50%;background:#ff4d6d}
 .triangle{
   width:0;height:0;
-  border-left:22px solid transparent;
-  border-right:22px solid transparent;
-  border-bottom:40px solid #ff4d6d;
-}
-
-@media(max-width:480px){
-  .circle{width:28px;height:28px}
-  .triangle{
-    border-left:18px solid transparent;
-    border-right:18px solid transparent;
-    border-bottom:32px solid #ff4d6d;
-  }
+  border-left:18px solid transparent;
+  border-right:18px solid transparent;
+  border-bottom:32px solid #ff4d6d;
 }
 </style>
 </head>
 
 <body>
 
-<div class="container" id="container"></div>
+<div class="main">
+  <div id="wordBox"></div>
 
-<div class="buttons" id="buttons">
-  <button id="yesBtn" onclick="yesClick()">Evet</button>
-  <button id="noBtn" onclick="noClick()">Hayır</button>
+  <div id="fullSentence">
+    Sen Ben İkimiz – 30.12.2025 – Saat 17.30 – Coffee LAB – Polatlı
+  </div>
+
+  <div class="buttons" id="buttons">
+    <button id="yesBtn" onclick="yesClick()">Evet</button>
+    <button id="noBtn" onclick="noClick()">Hayır</button>
+  </div>
+
+  <div id="finalLove">Seni Seviyorum ❤️</div>
 </div>
-
-<div class="container" id="finalLove">Seni Seviyorum ❤️</div>
 
 <div class="shapes">
   <div class="triangle"></div>
@@ -140,71 +150,59 @@ button{
 <audio id="music" src="https://files.catbox.moe/5o8y0j.mp3"></audio>
 
 <script>
-const words=[
-"Sen","Ben","İkimiz",
-"30.12.2025",
-"Saat 17.30",
-"Coffee LAB",
-"Polatlı"
-];
-
-const container=document.getElementById("container");
+const words=["Sen","Ben","İkimiz","30.12.2025","Saat 17.30","Coffee LAB","Polatlı"];
+const wordBox=document.getElementById("wordBox");
 const buttons=document.getElementById("buttons");
+const fullSentence=document.getElementById("fullSentence");
 const music=document.getElementById("music");
 
 let i=0;
 
-// 🔥 KELİME ANİMASYONU (SADE VE GÜVENLİ)
-function nextWord(){
-  if(i>=words.length) return;
-  container.innerHTML=`<div class="word">${words[i]}</div>`;
-  i++;
-  setTimeout(nextWord,1400);
-}
-nextWord();
-
-// 🚨 ZORUNLU DEVAM SİGORTASI
-setTimeout(()=>{
-  container.style.display="none";
-  buttons.style.display="flex";
-},12000);
-
-// 🎵 MÜZİK (ilk etkileşim)
-document.body.addEventListener("click",()=>{
-  if(music.paused){
-    music.volume=0.6;
-    music.play();
+function showWords(){
+  if(i>=words.length){
+    fullSentence.style.display="block";
+    buttons.style.display="block";
+    return;
   }
+  wordBox.innerHTML=`<div class="word">${words[i]}</div>`;
+  i++;
+  setTimeout(showWords,1400);
+}
+showWords();
+
+// Müzik
+document.body.addEventListener("click",()=>{
+  if(music.paused){music.volume=0.6;music.play();}
 },{once:true});
 
+// Hayır kaçma
 function noClick(){
   const btn=document.getElementById("noBtn");
-  const pad=20;
-  const x=Math.random()*(window.innerWidth-btn.offsetWidth-pad);
-  const y=Math.random()*(window.innerHeight-btn.offsetHeight-pad);
-  btn.style.left=x+"px";
-  btn.style.top=y+"px";
+  const area=document.querySelector(".buttons");
+  const maxX=area.clientWidth-btn.offsetWidth;
+  const maxY=area.clientHeight-btn.offsetHeight;
+  btn.style.left=Math.random()*maxX+"px";
+  btn.style.bottom=Math.random()*maxY+"px";
 }
 
+// Evet
 function yesClick(){
   document.body.classList.add("shake");
-
-  for(let j=0;j<30;j++){
+  for(let j=0;j<25;j++){
     const h=document.createElement("div");
     h.className="heart";
     h.innerText="❤️";
-    h.style.left=Math.random()*window.innerWidth+"px";
-    h.style.top=window.innerHeight+"px";
+    h.style.left=Math.random()*innerWidth+"px";
+    h.style.top=innerHeight+"px";
     document.body.appendChild(h);
     setTimeout(()=>h.remove(),2000);
   }
 
-  buttons.style.display="none";
-  container.style.display="none";
-  document.getElementById("finalLove").style.display="flex";
+  document.querySelector(".main").innerHTML="";
+  document.getElementById("finalLove").style.display="block";
 
   setTimeout(()=>{
-    window.location.href="https://wa.me/905075775145?text=Seni%20Seviyorum";
+    location.href="https://wa.me/905075775145?text=Seni%20Seviyorum";
   },3000);
 }
 </script>
